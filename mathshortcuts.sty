@@ -1,0 +1,82 @@
+%%Identification
+%%The package identifies itself and the LaTeX version needed
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mathshortcuts}[2022/02/05 Math Shortcuts]
+
+\RequirePackage{forloop}
+\RequirePackage{amsmath}
+
+\@ifpackageloaded{unicode-math}{%
+    \newcommand{\mybm}[1]{\symbf{#1}}%
+}{%
+    \RequirePackage{bm}%
+    \newcommand{\mybm}[1]{\bm{#1}}%
+}%
+
+\newcommand{\defbf}[1]{\expandafter\newcommand\csname
+    v#1\endcsname{{\mybm{#1}}}}
+\newcommand{\defubf}[1]{\expandafter\newcommand\csname
+    vu#1\endcsname{{\mathbf{#1}}}}
+\newcounter{calBbCounter}
+\forLoop{1}{26}{calBbCounter}{
+    \ifnum\value{calBbCounter}=22
+        \newcommand{\bv}{\mybm{v}}
+    \else
+        \edef\letter{\alph{calBbCounter}}
+        \expandafter\defbf\letter
+    \fi
+    \edef\letter{\alph{calBbCounter}}
+    \expandafter\defubf\letter
+}
+\forLoop{1}{26}{calBbCounter}{
+    \edef\letter{\Alph{calBbCounter}}
+    \expandafter\defbf\letter
+}
+\newcommand{\valpha}{\mybm\alpha}
+\newcommand{\vbeta}{\mybm\beta}
+\newcommand{\vchi}{\mybm\chi}
+\newcommand{\vdelta}{\mybm\delta}
+\newcommand{\vepsilon}{\mybm\epsilon}
+\newcommand{\veta}{\mybm\eta}
+\newcommand{\vgamma}{\mybm\gamma}
+\newcommand{\viota}{\mybm\iota}
+\newcommand{\vkappa}{\mybm\kappa}
+\newcommand{\vlambda}{\mybm\lambda}
+\newcommand{\vmu}{\mybm\mu}
+\newcommand{\vomega}{\mybm\omega}
+\newcommand{\vphi}{\mybm\phi}
+\newcommand{\vpi}{\mybm\pi}
+\newcommand{\vpsi}{\mybm\psi}
+\newcommand{\vrho}{\mybm\rho}
+\newcommand{\vsigma}{\mybm\sigma}
+\newcommand{\vtau}{\mybm\tau}
+\newcommand{\vtheta}{\mybm\theta}
+\newcommand{\vupsilon}{\mybm\upsilon}
+\newcommand{\vxi}{\mybm\xi}
+\newcommand{\vzeta}{\mybm\zeta}
+% \newcommand{\vdigamma}{\mybm\digamma}
+\newcommand{\vDelta}{\mybm\Delta}
+\newcommand{\vGamma}{\mybm\Gamma}
+\newcommand{\vLambda}{\mybm\Lambda}
+\newcommand{\vOmega}{\mybm\Omega}
+\newcommand{\vPhi}{\mybm\Phi}
+\newcommand{\vPi}{\mybm\Pi}
+\newcommand{\vPsi}{\mybm\Psi}
+\newcommand{\vSigma}{\mybm\Sigma}
+\newcommand{\vTheta}{\mybm\Theta}
+\newcommand{\vUpsilon}{\mybm\Upsilon}
+\newcommand{\vXi}{\mybm\Xi}
+\newcommand{\vzero}{\mybm{0}}
+\newcommand{\vones}{\mybm{1}}
+
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\T}{^\mathrm{T}}
+\newcommand\rvec[2][]{%
+  \mathchoice{\left(#2\right)#1}
+  {(#2)#1}
+  {(#2)#1}
+  {(#2)#1}  
+}
+\newcommand{\cvec}[1]{\rvec[\T]{#1}}
+
+\DeclareMathOperator{\var}{var}

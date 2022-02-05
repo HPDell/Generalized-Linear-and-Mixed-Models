@@ -1,0 +1,55 @@
+\documentclass[UTF8]{ctexart}
+
+\usepackage{unicode-math}
+\usepackage{amsmath}
+\setmainfont{XITS}
+\setmathfont{XITS Math}
+\usepackage{mathshortcuts}
+
+\usepackage[left=2.1cm,right=2.1cm,top=1.9cm,bottom=1.9cm]{geometry}
+
+\title{\textbf{线性混合模型笔记}\\\large 参考 \textit{Generalized, Linear and Mixed Models}}
+\author{\textit{胡奕公}}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{线性混合模型}
+
+线性模型（Linear Model, LM）的出发点是 $ E[\vy] = \vX\vbeta $，其中 $ \vbeta $ 是固定效应。线性混合模型（Linear Mixed Model, LMM）在线性模型的基础上，添加了 $ \vZ\vu $，其中 $ \vZ $ 和 $ \vX $ 类似，是已知的数据矩阵；$ \vu $ 是随机效应。尽管 $ \vu $ 中的元素是随机变量，但是在其取值的条件下确定模型是非常方便的，即
+\begin{equation}\label{equ:lmm-exp-cond-mean}
+    E[\vy|\vu] = \vX\vbeta + \vZ\vu
+\end{equation}
+即对于任意一个确定的 $ \vu $，式\eqref{equ:lmm-exp-cond-mean}是一个条件均值\footnote{如果使用 $\vU$ 代表随机变量，$\vu$ 代表实际值，则需要将 $E[\vy|\vu]$ 改写为 $E[\vy|\vU=\vu]$，但这样的书写方式比较繁琐，因此保留 $E[\vy|\vu]$ 的写法}。对于 $ \vu $，认为其满足 $ \vu \sim (\vzero, \vD) $，即 $ E[\vu] = \vzero, \var(\vu) = \vD $，这不会有任何损失\footnote{原文中有证明}。
+
+为了确定 $ \var(\vy) $，根据 $ \var(\vu) = \vD $，定义
+\begin{equation}
+    \var(\vy|\vu) = \vR
+\end{equation}
+又有 $ E[\vu] = 0 $，则
+\begin{equation}\label{equ:y-mean-var}
+    \vy \sim (\vX\vbeta, \vZ\vD\vZ\T+\vR)
+\end{equation}
+可以发现，固定效应只影响均值，随机效应只影响方差。
+
+\section{因变量方差的结构特征}
+
+根据式\eqref{equ:y-mean-var}，$ \var(\vy) $ 的表达式是
+\begin{equation}
+    \vV = \var(\vy) = \vZ\vD\vZ\T + \vR
+\end{equation}
+通过下面的一些例子，可以对其进行简化。
+
+\subsection{案例}
+
+假设有一组关于学生数学成绩的数据，包括纽约15个高中、4个九年级班的所有学生。除了男生和女生之间的差异（这需要通过固定效应建模），毫无疑问，有三种变异的来源：学校之间、同学校班级之间、同班级不同学生之间。令学校 $ i $、班级 $ j $、学生 $ k $ （性别 $ t $）的成绩是 $ y_{tijk} $，则模型表达式可以是
+\begin{equation}
+    E[y_{tijk}|s_i,c_{ij}] = \beta_t + s_i + c_{ij}
+\end{equation}
+其中 $ \beta_t $ 是性别 $ t $ 产生的固定效应。学校的影响（即 $ s_i(i=1, 2, \cdots, 15) $ 和班级的影响（即 $ c_{ij}(j=1, 2, \cdots, 4) $）被认为是随机效应。使用 $ p_{tijk} $ 代表每个学生成绩中所有无法被 $ \beta_t, s_i, c_{ij} $ 解释的部分。因此式\eqref{equ:lmm-exp-cond-mean}中 $ \vX\vbeta $ 的 $ \vbeta $ 会具有两个元素，分别是代表男性的 $ \beta_m $ 和代表女性的 $ \beta_f $。同时，$ \vZ\vu $ 中的 $ \vu $ 会有 15 个 $ s_i $ 效应以及 60 个 $ c_{ij} $ 效应。
+
+\subsection{效应间的协方差}
+
+\end{document}
